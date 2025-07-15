@@ -1,5 +1,3 @@
-
-````markdown
 # Expense Tracker API
 
 A Spring Boot-based RESTful API that allows a user to manage personal expenses and categories. It supports full CRUD operations and basic filtering, with PostgreSQL as the database. All endpoints have been thoroughly tested using unit tests, Swagger, and Postman.
@@ -48,7 +46,7 @@ This API enables a user to:
 {
   "name": "Food"
 }
-````
+
 
 ---
 
