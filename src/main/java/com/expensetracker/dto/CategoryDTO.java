@@ -1,9 +1,14 @@
 package com.expensetracker.dto;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import java.util.UUID;
 
 public class CategoryDTO {
     private UUID id;
+
+    @NotBlank(message = "Category name must not be blank")
+    @Size(max = 100, message = "Category name must not exceed 100 characters")
     private String name;
 
     public CategoryDTO() {}

@@ -1,9 +1,9 @@
-// ExpenseServiceTest.java
-
 package com.expensetracker;
 
 import com.expensetracker.dto.CategoryDTO;
 import com.expensetracker.dto.ExpenseDTO;
+import com.expensetracker.dto.ExpenseUpdateDTO;
+import com.expensetracker.exception.ResourceNotFoundException;
 import com.expensetracker.model.Category;
 import com.expensetracker.model.Expense;
 import com.expensetracker.repository.CategoryRepository;
@@ -25,6 +25,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.*;
 
 class ExpenseServiceTest {
@@ -76,13 +79,31 @@ class ExpenseServiceTest {
 
     @Test
     void testCreateExpense() {
+        CategoryDTO categoryDTOWithOnlyId = new CategoryDTO();
+        categoryDTOWithOnlyId.setId(categoryId);
+
+        ExpenseDTO createDTO = new ExpenseDTO();
+        createDTO.setDescription("Table salt");
+        createDTO.setAmount(1200.0);
+        createDTO.setDate(LocalDate.of(2025, 7, 10));
+        createDTO.setCategory(categoryDTOWithOnlyId);
+
         when(categoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
         when(expenseRepository.save(any(Expense.class))).thenReturn(expense);
 
-        ExpenseDTO result = expenseService.createExpense(expenseDTO);
+        ExpenseDTO result = expenseService.createExpense(createDTO);
         assertNotNull(result);
-        assertEquals("Lunch", result.getDescription());
+        assertEquals("Lunch", result.getDescription()); 
         verify(expenseRepository).save(any(Expense.class));
+    }
+
+    @Test
+    void testExpenseNotFound_ThrowsException() {
+        when(expenseRepository.findById(any())).thenReturn(Optional.empty());
+
+        assertThrows(ResourceNotFoundException.class, () -> {
+            expenseService.getExpenseById(UUID.randomUUID());
+        });
     }
 
     @Test
@@ -91,9 +112,15 @@ class ExpenseServiceTest {
         when(categoryRepository.findById(categoryId)).thenReturn(Optional.of(category));
         when(expenseRepository.save(any(Expense.class))).thenReturn(expense);
 
-        ExpenseDTO result = expenseService.updateExpense(expenseId, expenseDTO);
+        ExpenseUpdateDTO updateDTO = new ExpenseUpdateDTO();
+        updateDTO.setDescription("Lunch Updated");
+        updateDTO.setAmount(150.0);
+        updateDTO.setDate(LocalDate.now());
+        updateDTO.setCategoryId(categoryId);
+
+        ExpenseDTO result = expenseService.updateExpense(expenseId, updateDTO);
         assertNotNull(result);
-        assertEquals("Lunch", result.getDescription());
+        assertEquals("Lunch Updated", result.getDescription());
     }
 
     @Test

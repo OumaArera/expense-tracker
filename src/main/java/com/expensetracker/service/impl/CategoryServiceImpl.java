@@ -1,6 +1,7 @@
 package com.expensetracker.service.impl;
 
 import com.expensetracker.dto.CategoryDTO;
+import com.expensetracker.exception.ResourceNotFoundException;
 import com.expensetracker.model.Category;
 import com.expensetracker.repository.CategoryRepository;
 import com.expensetracker.repository.ExpenseRepository;
@@ -45,7 +46,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public CategoryDTO updateCategory(UUID id, CategoryDTO dto) {
         Category category = categoryRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found"));
         category.setName(dto.getName());
         return mapToDTO(categoryRepository.save(category));
     }
@@ -53,7 +54,7 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public void deleteCategory(UUID id) {
         if (expenseRepository.existsByCategoryId(id)) {
-            throw new RuntimeException("Cannot delete category. It is associated with existing expenses.");
+            throw new ResourceNotFoundException("Cannot delete category. It is associated with existing expenses.");
         }
         categoryRepository.deleteById(id);
     }

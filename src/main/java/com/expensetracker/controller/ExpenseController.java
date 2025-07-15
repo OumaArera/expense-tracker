@@ -1,7 +1,11 @@
 package com.expensetracker.controller;
 
 import com.expensetracker.dto.ExpenseDTO;
+import com.expensetracker.dto.ExpenseUpdateDTO;
 import com.expensetracker.service.ExpenseService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,14 +40,15 @@ public class ExpenseController {
     }
 
     @PostMapping
-    public ExpenseDTO createExpense(@RequestBody ExpenseDTO dto) {
+    public ExpenseDTO createExpense(@RequestBody @Valid ExpenseDTO dto) {
         return expenseService.createExpense(dto);
     }
 
     @PutMapping("/{id}")
-    public ExpenseDTO updateExpense(@PathVariable UUID id, @RequestBody ExpenseDTO dto) {
+    public ExpenseDTO updateExpense(@PathVariable UUID id, @RequestBody ExpenseUpdateDTO dto) {
         return expenseService.updateExpense(id, dto);
     }
+
 
     @DeleteMapping("/{id}")
     public void deleteExpense(@PathVariable UUID id) {

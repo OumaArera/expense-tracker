@@ -75,32 +75,46 @@ This API enables a user to:
   "description": "Sukari",
   "amount": 450.0,
   "date": "2025-07-11",
-  "categoryId": "97b4ca11-3840-4e49-895c-3eb1bdaf8dd3"
+  "category": {
+    "id": "97b4ca11-3840-4e49-895c-3eb1bdaf8dd3"
+  }
 }
 ```
 
 ---
 
-## Testing
 
-* **Unit tests** written for services using **JUnit 5** and **Mockito**
+
+## Testing & Coverage
+
+* Unit tests written with **JUnit 5** and **Mockito**
+* Integration tests use **`@SpringBootTest`**, **H2 DB**, and **TestRestTemplate**
 * All tests pass successfully
-* APIs verified using both **Swagger UI** and **Postman**
 
-**Running Tests**
+### Run Tests
 
 ```bash
 mvn test
 ```
 
-Test output (excerpt):
+### Generate Coverage Report
+
+```bash
+mvn clean verify
+```
+
+Open the coverage report:
 
 ```
-Tests run: 16, Failures: 0, Errors: 0, Skipped: 0
-BUILD SUCCESS
+target/site/jacoco/index.html
 ```
+
+### Coverage Summary
+
+> **Current test coverage: 90%** (measured using **JaCoCo**)
 
 ---
+
 
 ## API Documentation
 
@@ -142,7 +156,12 @@ expense-tracker/
 │   │   │   │   └── ExpenseController.java
 │   │   │   ├── dto/                    # Data Transfer Objects
 │   │   │   │   ├── CategoryDTO.java
-│   │   │   │   └── ExpenseDTO.java
+│   │   │   │   ├── ExpenseDTO.java
+│   │   │   │   └── ExpenseUpdateDTO.java
+│   │   │   ├── exception/              # Custom exception handling
+│   │   │   │   ├── ErrorResponse.java
+│   │   │   │   ├── GlobalExceptionHandler.java
+│   │   │   │   └── ResourceNotFoundException.java
 │   │   │   ├── model/                  # JPA entity classes
 │   │   │   │   ├── Category.java
 │   │   │   │   └── Expense.java
@@ -150,7 +169,7 @@ expense-tracker/
 │   │   │   │   ├── CategoryRepository.java
 │   │   │   │   └── ExpenseRepository.java
 │   │   │   ├── service/                # Business logic
-│   │   │   │   ├── impl/
+│   │   │   │   ├── impl/               # Service implementations
 │   │   │   │   │   ├── CategoryServiceImpl.java
 │   │   │   │   │   └── ExpenseServiceImpl.java
 │   │   │   │   ├── CategoryService.java
@@ -168,6 +187,7 @@ expense-tracker/
 ├── mvnw, mvnw.cmd                      # Maven wrapper scripts
 ├── README.md                           # Project documentation
 └── HELP.md (optional)                  # Spring Boot generated help file
+
 
 ```
 

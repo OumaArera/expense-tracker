@@ -2,6 +2,8 @@ package com.expensetracker.service.impl;
 
 import com.expensetracker.dto.CategoryDTO;
 import com.expensetracker.dto.ExpenseDTO;
+import com.expensetracker.dto.ExpenseUpdateDTO;
+import com.expensetracker.exception.ResourceNotFoundException;
 import com.expensetracker.model.Category;
 import com.expensetracker.model.Expense;
 import com.expensetracker.repository.CategoryRepository;
@@ -35,7 +37,6 @@ public class ExpenseServiceImpl implements ExpenseService {
                 expense.getDescription(),
                 expense.getAmount(),
                 expense.getDate(),
-                // category.getId(),
                 categoryDTO,
                 expense.getCreatedAt(),
                 expense.getUpdatedAt()
@@ -52,15 +53,19 @@ public class ExpenseServiceImpl implements ExpenseService {
     @Override
     public ExpenseDTO getExpenseById(UUID id) {
         Expense expense = expenseRepository.findById(id)
-            .orElseThrow(() -> new RuntimeException("Expense not found with id: " + id));
+            .orElseThrow(() -> new ResourceNotFoundException("Expense not found with id: " + id));
         return mapToDTO(expense);
     }
 
     @Override
     public ExpenseDTO createExpense(ExpenseDTO dto) {
+        if (dto.getCategory() == null) {
+            throw new ResourceNotFoundException("Category is required");
+        }
+
         UUID categoryId = dto.getCategory().getId();
         Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + categoryId));
 
         Expense expense = new Expense();
         expense.setDescription(dto.getDescription());
@@ -72,18 +77,27 @@ public class ExpenseServiceImpl implements ExpenseService {
     }
 
     @Override
-    public ExpenseDTO updateExpense(UUID id, ExpenseDTO dto) {
+    public ExpenseDTO updateExpense(UUID id, ExpenseUpdateDTO dto) {
         Expense expense = expenseRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Expense not found"));
+                .orElseThrow(() -> new ResourceNotFoundException("Expense not found with id: " + id));
 
-        UUID categoryId = dto.getCategory().getId();
-        Category category = categoryRepository.findById(categoryId)
-                .orElseThrow(() -> new RuntimeException("Category not found"));
+        if (dto.getDescription() != null) {
+            expense.setDescription(dto.getDescription());
+        }
 
-        expense.setDescription(dto.getDescription());
-        expense.setAmount(dto.getAmount());
-        expense.setDate(dto.getDate());
-        expense.setCategory(category);
+        if (dto.getAmount() != null) {
+            expense.setAmount(dto.getAmount());
+        }
+
+        if (dto.getDate() != null) {
+            expense.setDate(dto.getDate());
+        }
+
+        if (dto.getCategoryId() != null) {
+            Category category = categoryRepository.findById(dto.getCategoryId())
+                    .orElseThrow(() -> new ResourceNotFoundException("Category not found with id: " + dto.getCategoryId()));
+            expense.setCategory(category);
+        }
 
         return mapToDTO(expenseRepository.save(expense));
     }

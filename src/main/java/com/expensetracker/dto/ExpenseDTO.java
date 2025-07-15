@@ -1,5 +1,6 @@
 package com.expensetracker.dto;
 
+import jakarta.validation.constraints.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
@@ -7,10 +8,19 @@ import java.util.UUID;
 public class ExpenseDTO {
 
     private UUID id;
+
+    @NotBlank(message = "Description is required")
     private String description;
+
+    @NotNull(message = "Amount is required")
+    @Positive(message = "Amount must be greater than 0")
     private Double amount;
+
+    @NotNull(message = "Date is required")
+    @PastOrPresent(message = "Date cannot be in the future")
     private LocalDate date;
-    // private UUID categoryId;
+
+    @NotNull(message = "Category is required")
     private CategoryDTO category;
 
     private LocalDateTime createdAt;
@@ -19,7 +29,7 @@ public class ExpenseDTO {
     public ExpenseDTO() {}
 
     public ExpenseDTO(UUID id, String description, Double amount, LocalDate date,
-                  CategoryDTO category, LocalDateTime createdAt, LocalDateTime updatedAt) {
+                      CategoryDTO category, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.description = description;
         this.amount = amount;
@@ -42,9 +52,6 @@ public class ExpenseDTO {
     public LocalDate getDate() { return date; }
     public void setDate(LocalDate date) { this.date = date; }
 
-    // public UUID getCategoryId() { return categoryId; }
-    // public void setCategoryId(UUID categoryId) { this.categoryId = categoryId; }
-
     public CategoryDTO getCategory() { return category; }
     public void setCategory(CategoryDTO category) { this.category = category; }
 
@@ -54,3 +61,5 @@ public class ExpenseDTO {
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
 }
+
+
