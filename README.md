@@ -178,9 +178,7 @@ expense-tracker/
 
 **John Ouma**
 Email: `johnouma999@gmail.com`
-GitHub: [`github.com/OumaArera`](https://github.com/OumaArera)
+GitHub: [`github.com/OumaArera`](https://github.com/OumaArera/expense-tracker)
 
 ---
 
-
-# expense-tracker
