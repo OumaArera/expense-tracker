@@ -42,11 +42,11 @@ This API enables a user to:
 | DELETE | `/api/categories/{id}`      | Delete a category   |
 
 **Sample Payload**
-
+```json
 {
   "name": "Food"
 }
-
+```
 
 ---
 
@@ -70,7 +70,7 @@ This API enables a user to:
 
 **Sample Payload**
 
-
+```json
 {
   "description": "Sukari",
   "amount": 450.0,
