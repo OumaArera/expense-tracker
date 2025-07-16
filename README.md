@@ -84,7 +84,6 @@ This API enables a user to:
 ---
 
 
-
 ## Testing & Coverage
 
 * Unit tests written with **JUnit 5** and **Mockito**
@@ -112,6 +111,14 @@ target/site/jacoco/index.html
 ### Coverage Summary
 
 > **Current test coverage: 90%** (measured using **JaCoCo**)
+
+### Unit Testing Summary
+
+![Unit Test Summary](./src/main/resources/static/unit_tests.jpeg)
+
+### UML Class Diagram
+
+![UML Class Diagram](./src/main/resources/static/UML.jpeg)
 
 ---
 
