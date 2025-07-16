@@ -114,11 +114,11 @@ target/site/jacoco/index.html
 
 ### Unit Testing Summary
 
-![Unit Test Summary](./src/main/resources/static/unit_tests.jpeg)
+![Unit Test Summary](./images/unit_tests.jpeg)
 
 ### UML Class Diagram
 
-![UML Class Diagram](./src/main/resources/static/UML.jpeg)
+![UML Class Diagram](./images/UML.jpeg)
 
 ---
 
